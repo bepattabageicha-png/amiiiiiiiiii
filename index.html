@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>For My Kucchu Pucchu 💌</title>
+
+<style>
+body{
+  margin:0;
+  background:#fde2e4;
+  font-family:"Comic Sans MS", cursive;
+  overflow:hidden;
+  text-align:center;
+}
+
+/* FLOATING HEARTS */
+.hearts{
+  position:fixed;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  z-index:0;
+  pointer-events:none;
+}
+
+.heart{
+  position:absolute;
+  bottom:-50px;
+  animation:floatUp linear infinite;
+  opacity:0.7;
+}
+
+@keyframes floatUp{
+  0%{transform:translateY(0) scale(0.8);opacity:0.8;}
+  100%{transform:translateY(-110vh) scale(1.4);opacity:0;}
+}
+
+/* GENERAL PAGE */
+.page{
+  position:absolute;
+  top:0;
+  width:100%;
+  height:100vh;
+  display:none;
+  z-index:2;
+}
+
+.button{
+  background:#ff4d6d;
+  color:white;
+  padding:10px 20px;
+  border:none;
+  border-radius:15px;
+  cursor:pointer;
+  margin-top:20px;
+}
+
+/* ENVELOPE */
+#envelopePage{display:block;}
+
+.envelope{
+  width:320px;
+  height:220px;
+  margin:180px auto;
+  position:relative;
+  cursor:pointer;
+  perspective:1000px;
+}
+
+.envelope-body{
+  width:100%;
+  height:100%;
+  background:#fff;
+  border:3px solid #ff8fab;
+  position:absolute;
+  bottom:0;
+}
+
+.flap{
+  width:0;
+  height:0;
+  border-left:160px solid transparent;
+  border-right:160px solid transparent;
+  border-bottom:110px solid #ff8fab;
+  position:absolute;
+  top:0;
+  transform-origin:top;
+  transition:transform 0.8s ease;
+}
+
+.open-flap{transform:rotateX(180deg);}
+
+.front-text{
+  position:absolute;
+  width:100%;
+  top:120px;
+  font-size:22px;
+  color:#c9184a;
+}
+
+.letter{
+  position:absolute;
+  width:90%;
+  height:90%;
+  background:#fff0f5;
+  border:2px dashed #ff8fab;
+  top:5%;
+  left:5%;
+  padding:20px;
+  box-sizing:border-box;
+  transform:translateY(100%);
+  transition:transform 0.8s ease;
+}
+
+.show-letter{transform:translateY(0);}
+
+/* CRAFT BOX */
+.craft-box{
+  background:#fff;
+  border:4px dashed #ff8fab;
+  padding:30px;
+  margin:150px auto;
+  width:80%;
+  max-width:450px;
+}
+
+/* CELEBRATION */
+.glasses{
+  font-size:80px;
+  margin-top:200px;
+  display:flex;
+  justify-content:center;
+  gap:80px;
+}
+
+.glass{transition:transform 0.4s ease;}
+
+.clink-left{transform:translateX(40px) rotate(-10deg);}
+.clink-right{transform:translateX(-40px) rotate(10deg);}
+
+.loveBurst{
+  position:absolute;
+  font-size:26px;
+  animation:explode 2.5s ease-out forwards;
+}
+
+@keyframes explode{
+  0%{transform:translate(0,0) scale(0.5);opacity:1;}
+  100%{transform:translate(var(--x),var(--y)) scale(1.5) rotate(720deg);opacity:0;}
+}
+
+/* POLAROIDS */
+.polaroid{
+  width:240px;
+  background:white;
+  padding:10px;
+  position:absolute;
+  cursor:grab;
+  box-shadow:0 10px 20px rgba(0,0,0,0.2);
+}
+
+.polaroid img{width:100%;}
+
+.polaroid p{
+  margin:10px 0 0;
+  font-size:20px;
+  color:#c9184a;
+}
+
+/* GAME */
+#basket{
+  position:absolute;
+  bottom:40px;
+  font-size:70px;
+  cursor:grab;
+}
+
+.rose{
+  position:absolute;
+  font-size:30px;
+}
+
+#scoreBoard{
+  font-size:24px;
+  color:#c9184a;
+  margin-top:20px;
+}
+
+#lockedText{
+  display:none;
+  font-size:28px;
+  color:#c9184a;
+  margin-top:40px;
+}
+
+.explosionRose{
+  position:absolute;
+  font-size:26px;
+  animation:explode 2s ease-out forwards;
+}
+</style>
+</head>
+
+<body>
+
+<div class="hearts" id="heartsContainer"></div>
+
+<h1>💘 Happy Valentine's Day My Kucchu Pucchu 💘</h1>
+
+<!-- ENVELOPE -->
+<div id="envelopePage" class="page" style="display:block;">
+  <div class="envelope" onclick="openEnvelope()">
+    <div class="flap" id="flap"></div>
+    <div class="envelope-body"></div>
+    <div class="front-text">Tap to Open 💌</div>
+    <div class="letter" id="letter"></div>
+  </div>
+</div>
+
+<!-- MESSAGE -->
+<div id="messagePage" class="page">
+  <div class="craft-box">
+    <h2>To My Kucchu Pucchu 🌸</h2>
+    <p>
+      Every second with you feels like magic.  
+      These 3 months and 9 days have been the sweetest days of my life.  
+      From the smallest laughs to the deepest talks, every moment feels like something I prayed for.  
+      You make my world softer, brighter, and so much happier.  
+      I wouldn’t trade what we have for anything.  
+      And I promise you, this is only the beginning of forever. 💕💗💞💘✨
+    </p>
+    <button class="button" onclick="startCelebration()">One More Thing 🍷</button>
+  </div>
+</div>
+
+<!-- CELEBRATION -->
+<div id="celebrationPage" class="page">
+  <div class="glasses">
+    <div class="glass" id="leftGlass">🍷</div>
+    <div class="glass" id="rightGlass">🍷</div>
+  </div>
+  <div id="cheersText" style="display:none; margin-top:30px; color:#c9184a; font-size:26px;">
+    Here’s to every other Valentine spent together 💖🥂💞
+    <br>
+    <button class="button" onclick="showPolaroids()">Next 💕</button>
+  </div>
+</div>
+
+<!-- POLAROIDS -->
+<div id="polaroidPage" class="page">
+  <div class="polaroid" style="top:100px; left:15%;">
+    <img src="mirror.jpg">
+    <p>Us 💖</p>
+  </div>
+  <div class="polaroid" style="top:180px; left:40%;">
+    <img src="bw.jpg">
+    <p>Forever 💞</p>
+  </div>
+  <div class="polaroid" style="top:120px; left:65%;">
+    <img src="car.jpg">
+    <p>Always 🧸</p>
+  </div>
+
+  <button class="button" style="position:absolute; bottom:40px; left:50%; transform:translateX(-50%);" onclick="showCountdownPage()">Next 💗</button>
+</div>
+
+<!-- COUNTDOWN -->
+<div id="countdownPage" class="page" style="padding-top:150px;">
+  <h2 style="color:#c9184a;">We've Been Together 💖</h2>
+  <div id="liveCounter" style="font-size:28px; margin-top:20px; color:#ff4d6d;"></div>
+  <button class="button" onclick="showFinalLovePage()">Next 💞</button>
+</div>
+
+<!-- FINAL LOVE -->
+<div id="finalLovePage" class="page" style="padding-top:200px;">
+  <h2 style="color:#c9184a;">That's 3 Months and 10 Days 💞</h2>
+  <p style="font-size:24px; color:#ff4d6d;">
+    With someone I wanna spend the rest of my life with 💖✨
+  </p>
+  <button class="button" onclick="showGamePage()">Next 🌹</button>
+</div>
+
+<!-- GAME -->
+<div id="gamePage" class="page" style="background:#fff0f5;">
+  <h2 style="color:#c9184a;">Collect 10 Roses 🌹</h2>
+  <div id="scoreBoard">Roses Collected: 0 / 10</div>
+  <div id="basket">🧺</div>
+  <div id="lockedText">
+    You have officially been locked in with me for the next 10 years 💖
+  </div>
+</div>
+
+<script>
+function hideAll(){document.querySelectorAll(".page").forEach(p=>p.style.display="none");}
+
+function openEnvelope(){
+  document.getElementById("flap").classList.add("open-flap");
+  document.getElementById("letter").classList.add("show-letter");
+  setTimeout(()=>{hideAll();document.getElementById("messagePage").style.display="block";},1500);
+}
+
+function startCelebration(){
+  hideAll();
+  document.getElementById("celebrationPage").style.display="block";
+  setTimeout(()=>{
+    leftGlass.classList.add("clink-left");
+    rightGlass.classList.add("clink-right");
+    loveExplosion();
+  },200);
+  setTimeout(()=>{
+    document.getElementById("cheersText").style.display="block";
+  },800);
+}
+
+function loveExplosion(){
+  const emojis=["🧸","💖","🌹"];
+  for(let i=0;i<100;i++){
+    const burst=document.createElement("div");
+    burst.className="loveBurst";
+    burst.innerHTML=emojis[Math.floor(Math.random()*emojis.length)];
+    burst.style.left="50vw";
+    burst.style.top="40vh";
+    const angle=Math.random()*2*Math.PI;
+    const distance=Math.random()*350+150;
+    burst.style.setProperty("--x",Math.cos(angle)*distance+"px");
+    burst.style.setProperty("--y",Math.sin(angle)*distance+"px");
+    celebrationPage.appendChild(burst);
+    setTimeout(()=>burst.remove(),2500);
+  }
+}
+
+function showPolaroids(){hideAll();document.getElementById("polaroidPage").style.display="block";}
+function showCountdownPage(){hideAll();document.getElementById("countdownPage").style.display="block";startCounter();}
+function showFinalLovePage(){clearInterval(counterInt);hideAll();document.getElementById("finalLovePage").style.display="block";}
+function showGamePage(){hideAll();document.getElementById("gamePage").style.display="block";startGame();}
+
+/* LIVE COUNTER */
+const relationshipStart=new Date("2025-11-06T14:00:00");
+let counterInt;
+function startCounter(){updateCounter();counterInt=setInterval(updateCounter,1000);}
+function updateCounter(){
+  const diff=new Date()-relationshipStart;
+  const s=Math.floor(diff/1000);
+  const d=Math.floor(s/86400);
+  const h=Math.floor((s%86400)/3600);
+  const m=Math.floor((s%3600)/60);
+  const sec=s%60;
+  liveCounter.innerHTML=d+" days "+h+" hours "+m+" minutes "+sec+" seconds 💕";
+}
+
+/* DRAG POLAROIDS */
+document.querySelectorAll(".polaroid").forEach(p=>{
+  let ox,oy,drag=false;
+  p.addEventListener("mousedown",e=>{drag=true;ox=e.clientX-p.offsetLeft;oy=e.clientY-p.offsetTop;});
+  document.addEventListener("mousemove",e=>{if(!drag)return;p.style.left=e.clientX-ox+"px";p.style.top=e.clientY-oy+"px";});
+  document.addEventListener("mouseup",()=>drag=false);
+});
+
+/* GAME */
+let score=0,gameInt;
+function startGame(){
+  score=0;
+  scoreBoard.innerHTML="Roses Collected: 0 / 10";
+  lockedText.style.display="none";
+  gameInt=setInterval(createRose,1000);
+}
+
+function createRose(){
+  const r=document.createElement("div");
+  r.className="rose";
+  r.innerHTML="🌹";
+  r.style.left=Math.random()*90+"vw";
+  r.style.top="-40px";
+  gamePage.appendChild(r);
+
+  let fall=setInterval(()=>{
+    r.style.top=(r.offsetTop+5)+"px";
+    const b=basket.getBoundingClientRect();
+    const rr=r.getBoundingClientRect();
+    if(rr.bottom>=b.top && rr.left<b.right && rr.right>b.left){
+      r.remove();clearInterval(fall);score++;
+      scoreBoard.innerHTML="Roses Collected: "+score+" / 10";
+      if(score>=10){clearInterval(gameInt);explode();}
+    }
+    if(r.offsetTop>window.innerHeight){r.remove();clearInterval(fall);}
+  },20);
+}
+
+function explode(){
+  for(let i=0;i<80;i++){
+    const burst=document.createElement("div");
+    burst.className="explosionRose";
+    burst.innerHTML="🌹";
+    burst.style.left="50vw";
+    burst.style.top="40vh";
+    const a=Math.random()*2*Math.PI;
+    const d=Math.random()*300+100;
+    burst.style.setProperty("--x",Math.cos(a)*d+"px");
+    burst.style.setProperty("--y",Math.sin(a)*d+"px");
+    gamePage.appendChild(burst);
+    setTimeout(()=>burst.remove(),2000);
+  }
+  lockedText.style.display="block";
+
+  const restartBtn=document.createElement("button");
+  restartBtn.className="button";
+  restartBtn.innerText="Restart From Beginning 💌";
+  restartBtn.onclick=restartStory;
+  lockedText.appendChild(restartBtn);
+}
+
+function restartStory(){
+  score=0;
+  clearInterval(gameInt);
+  document.querySelectorAll(".rose").forEach(r=>r.remove());
+  document.querySelectorAll(".explosionRose").forEach(r=>r.remove());
+  document.querySelectorAll(".loveBurst").forEach(r=>r.remove());
+  hideAll();
+  document.getElementById("envelopePage").style.display="block";
+  document.getElementById("flap").classList.remove("open-flap");
+  document.getElementById("letter").classList.remove("show-letter");
+}
+
+/* DRAG BASKET */
+basket.style.left="45vw";
+let dragging=false,off;
+basket.addEventListener("mousedown",e=>{dragging=true;off=e.clientX-basket.offsetLeft;});
+document.addEventListener("mousemove",e=>{if(!dragging)return;basket.style.left=e.clientX-off+"px";});
+document.addEventListener("mouseup",()=>dragging=false);
+
+/* FLOATING HEARTS */
+function createHeart(){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="💖";
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=(Math.random()*20+15)+"px";
+  h.style.animationDuration=(Math.random()*5+6)+"s";
+  heartsContainer.appendChild(h);
+  setTimeout(()=>h.remove(),11000);
+}
+setInterval(createHeart,400);
+</script>
+
+</body>
+</html>
